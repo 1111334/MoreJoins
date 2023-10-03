@@ -1,0 +1,50 @@
+
+CREATE TABLE `transactions` (
+	`transaction_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`amount` DOUBLE NULL DEFAULT NULL,
+	`customer_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`transaction_id`) USING BTREE,
+	INDEX `FK_transactions_clienti` (`customer_id`) USING BTREE,
+	CONSTRAINT `FK_transactions_clienti` FOREIGN KEY (`customer_id`) REFERENCES `clienti` (`customer_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=3
+;
+
+CREATE TABLE `costumer` (
+	`costumer_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`last_name` VARCHAR(255) NOT NULL DEFAULT '0' COLLATE 'latin1_swedish_ci',
+	`first_name` VARCHAR(255) NOT NULL DEFAULT '0' COLLATE 'latin1_swedish_ci',
+	PRIMARY KEY (`costumer_id`) USING BTREE
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=3
+;
+
+SELECT *
+FROM transactions
+INNER JOIN costumer ON transactions.customer_id = costumer.costumer_id
+
+SELECT *, transaction_id, amount, first_name, last_name
+FROM transactions
+LEFT JOIN costumer ON transactions.customer_id = costumer.costumer_id;
+
+SELECT *, transaction_id, amount, first_name, last_name
+FROM transactions
+RIGHT JOIN costumer ON transactions.customer_id = costumer.costumer_id;
+
+SELECT *
+FROM transactions
+LEFT JOIN customer ON transactions.customer_id = customer.customer_id
+WHERE customer.customer_id IS NULL
+
+SELECT *
+FROM transactions
+RIGHT JOIN customer ON transactions.customer_id = customer.customer_id
+WHERE transactions.customer_id IS NULL
+
+
+
+
