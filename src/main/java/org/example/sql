@@ -1,49 +1,55 @@
-
 CREATE TABLE `transactions` (
-	`transaction_id` INT(11) NOT NULL AUTO_INCREMENT,
-	`amount` DOUBLE NULL DEFAULT NULL,
-	`customer_id` INT(11) NULL DEFAULT NULL,
-	PRIMARY KEY (`transaction_id`) USING BTREE,
-	INDEX `FK_transactions_clienti` (`customer_id`) USING BTREE,
-	CONSTRAINT `FK_transactions_clienti` FOREIGN KEY (`customer_id`) REFERENCES `clienti` (`customer_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+	`product_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`country` VARCHAR(255) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`salary` DOUBLE NULL DEFAULT NULL,
+	`customers_id` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`product_id`) USING BTREE,
+	INDEX `FK_transactions_customers` (`customers_id`) USING BTREE,
+	CONSTRAINT `FK_transactions_customers` FOREIGN KEY (`customers_id`) REFERENCES `customers` (`customers_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='latin1_swedish_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=3
+AUTO_INCREMENT=7
 ;
 
-CREATE TABLE `costumer` (
-	`costumer_id` INT(11) NOT NULL AUTO_INCREMENT,
-	`last_name` VARCHAR(255) NOT NULL DEFAULT '0' COLLATE 'latin1_swedish_ci',
-	`first_name` VARCHAR(255) NOT NULL DEFAULT '0' COLLATE 'latin1_swedish_ci',
-	PRIMARY KEY (`costumer_id`) USING BTREE
+
+CREATE TABLE `customers` (
+	`customers_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`last_name` VARCHAR(255) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`first_name` VARCHAR(255) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`age` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`customers_id`) USING BTREE
 )
 COLLATE='latin1_swedish_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=3
+AUTO_INCREMENT=8
 ;
 
-SELECT *
-FROM transactions
-INNER JOIN costumer ON transactions.customer_id = costumer.costumer_id
+SELECT * FROM transactions
+INNER JOIN customers ON
+transactions.customers_id = customers.customers_id;
 
-SELECT *, transaction_id, amount, first_name, last_name
-FROM transactions
-LEFT JOIN costumer ON transactions.customer_id = costumer.costumer_id;
 
-SELECT *, transaction_id, amount, first_name, last_name
-FROM transactions
-RIGHT JOIN costumer ON transactions.customer_id = costumer.costumer_id;
+SELECT * FROM transactions
+LEFT JOIN customers ON
+transactions.customers_id = customers.customers_id;
 
-SELECT *
-FROM transactions
-LEFT JOIN customer ON transactions.customer_id = customer.customer_id
-WHERE customer.customer_id IS NULL
 
-SELECT *
-FROM transactions
-RIGHT JOIN customer ON transactions.customer_id = customer.customer_id
-WHERE transactions.customer_id IS NULL
+SELECT * FROM transactions
+RIGHT JOIN customers ON
+transactions.customers_id = customers.customers_id;
+
+
+SELECT * FROM transactions
+LEFT JOIN customers ON
+transactions.customers_id = customers.customers_id
+WHERE customers.customers_id IS NULL;
+
+
+SELECT * FROM transactions
+RIGHT JOIN customers ON
+transactions.customers_id = customers.customers_id
+WHERE transactions.customers_id IS NULL;
 
 
 
